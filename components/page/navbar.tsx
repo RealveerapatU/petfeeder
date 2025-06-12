@@ -106,7 +106,7 @@ export default function App() {
         </NavbarBrand>
         <NavbarContent className="hidden sm:flex flex-1 justify-center gap-3">
           <NavbarItem>
-            <Link color="foreground" href="#">
+            <Link color="foreground" href="#features">
               Features
             </Link>
           </NavbarItem>
@@ -149,6 +149,7 @@ export default function App() {
               src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
             />
           </DropdownTrigger>
+
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
               <p className="font-semibold">Signed in as</p>

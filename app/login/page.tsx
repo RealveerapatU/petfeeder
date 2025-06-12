@@ -5,12 +5,12 @@ import { button as buttonStyles } from "@heroui/theme";
 
 import { siteConfig } from "@/config/site";
 import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
+import { GithubIcon } from "@/components/page/icons";
 
 export default function Home() {
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-     <div>Login</div>
+      <div>Login</div>
     </section>
   );
 }
