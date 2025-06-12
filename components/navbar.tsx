@@ -124,7 +124,7 @@ export default function App() {
       </NavbarContent>
 
       <NavbarContent as="div" className="items-center" justify="end">
-        <Input
+        {/* <Input
           classNames={{
             base: "max-w-full sm:max-w-[10rem] h-10",
             mainWrapper: "h-full",
@@ -136,7 +136,7 @@ export default function App() {
           size="sm"
           startContent={<SearchIcon size={18} />}
           type="search"
-        />
+        /> */}
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <Avatar
