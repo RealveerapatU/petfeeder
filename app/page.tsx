@@ -2,6 +2,7 @@ import background from "@/public/bg.jpg";
 import { motion } from "framer-motion";
 import Typewriter from "typewriter-effect";
 import Features from "@/components/page/features";
+
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -26,7 +27,7 @@ export default function Home() {
         }}
       ></section>
       <section id="features">
-        <Features/>
+        <Features />
       </section>
     </div>
   );
