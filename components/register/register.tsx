@@ -1,18 +1,57 @@
 "use client";
+import axios from "axios";
 import React from "react";
+require("dotenv").config();
+async function checkRepeat(username: string) {
+  let repeat = false;
+  try {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/user`);
+    if (response.status === 200) {
+      const data = response.data.users;
+      const usernames = data.map((item: any) => item.usernames);
+      for (let i = 0; i < usernames.length; i++) {
+        if (usernames[i] === username) {
+          repeat = true;
+          break;
+        }
+      }
+      if (repeat) {
+        return "repeat";
+      }
+      return "norepeat";
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-function Register(e: React.FormEvent<HTMLFormElement>) {
+async function Register(e: React.FormEvent<HTMLFormElement>) {
   e.preventDefault();
   const formData = new FormData(e.currentTarget);
-  const email = formData.get("email")?.toString();
+  const username = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
   const confirmPassword = formData.get("confirm-password")?.toString();
   const terms = formData.get("terms")?.toString();
-
-  console.log("Email:", email);
-  console.log("Password:", password);
-  console.log("Confirm Password:", confirmPassword);
-  console.log("Accepted Terms:", terms ? "Yes" : "No");
+  const isRepeat = await checkRepeat(username!);
+  if (password === confirmPassword) {
+    if (isRepeat === "norepeat") {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_URL}/api/registra`,
+        {
+          username: username,
+          password: password,
+        }
+      );
+      if (response.status === 200) {
+        alert("Register Successful");
+      }
+      return;
+    }
+    alert("This username is already exist");
+    return;
+  }
+  alert("Password and Confirm mismatched");
+  return;
 }
 
 export default function App() {
@@ -44,7 +83,7 @@ export default function App() {
                   Your email
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   name="email"
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
