@@ -2,31 +2,6 @@
 import axios from "axios";
 import React from "react";
 require("dotenv").config();
-async function checkRepeat(username: string) {
-  let repeat = false;
-  try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/user`);
-    if (response.status === 200) {
-      const data = response.data.users;
-      if (data === undefined) {
-        return "norepeat";
-      }
-      const usernames = data.map((item: any) => item.usernames);
-      for (let i = 0; i < usernames.length; i++) {
-        if (usernames[i] === username) {
-          repeat = true;
-          break;
-        }
-      }
-      if (repeat) {
-        return "repeat";
-      }
-      return "norepeat";
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 async function Register(e: React.FormEvent<HTMLFormElement>) {
   e.preventDefault();
@@ -34,27 +9,6 @@ async function Register(e: React.FormEvent<HTMLFormElement>) {
   const username = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
   const confirmPassword = formData.get("confirm-password")?.toString();
-  const terms = formData.get("terms")?.toString();
-  const isRepeat = await checkRepeat(username!);
-  if (password === confirmPassword) {
-    if (isRepeat === "norepeat") {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_URL}/api/registra`,
-        {
-          username: username,
-          password: password,
-        }
-      );
-      if (response.status === 200) {
-        alert("Register Successful");
-      }
-      return;
-    }
-    alert("This username is already exist");
-    return;
-  }
-  alert("Password and Confirm mismatched");
-  return;
 }
 
 export default function App() {
@@ -75,7 +29,7 @@ export default function App() {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create an account
+              Sign In
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={Register}>
               <div>
@@ -110,22 +64,7 @@ export default function App() {
                   required
                 />
               </div>
-              <div>
-                <label
-                  htmlFor="confirm-password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Confirm password
-                </label>
-                <input
-                  type="password"
-                  name="confirm-password"
-                  id="confirm-password"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                />
-              </div>
+
               <div className="flex items-start">
                 <div className="flex items-center h-5">
                   <input
@@ -141,13 +80,7 @@ export default function App() {
                     htmlFor="terms"
                     className="font-light text-gray-500 dark:text-gray-300"
                   >
-                    I accept the{" "}
-                    <a
-                      className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                      href="/"
-                    >
-                      Terms and Conditions
-                    </a>
+                    Remember me
                   </label>
                 </div>
               </div>
@@ -158,12 +91,12 @@ export default function App() {
                 Create an account
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{" "}
+                Doesn&apos;t have an account yet?{" "}
                 <a
-                  href="/signin"
+                  href="/signup"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
-                  Sign in here
+                  Sign up here
                 </a>
               </p>
             </form>

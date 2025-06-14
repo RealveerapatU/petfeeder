@@ -180,7 +180,7 @@ export default function App() {
             <DropdownItem key="profile" className="h-14 gap-2">
               {username == "undefined" ? (
                 <>
-                  <a href="/register">
+                  <a href="/signup">
                     <p className="font-semibold">Sign in</p>
                   </a>
                 </>
