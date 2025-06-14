@@ -3,12 +3,30 @@ import axios from "axios";
 import React from "react";
 require("dotenv").config();
 
-async function Register(e: React.FormEvent<HTMLFormElement>) {
+async function signin(e: React.FormEvent<HTMLFormElement>) {
   e.preventDefault();
   const formData = new FormData(e.currentTarget);
   const username = formData.get("email")?.toString();
-  const password = formData.get("password")?.toString();
-  const confirmPassword = formData.get("confirm-password")?.toString();
+  const inpassword = formData.get("password")?.toString();
+
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/api/user`,
+      {
+        username: username,
+      }
+    );
+    if (response.status === 200) {
+      const password = response.data.users[0].passwords;
+      if (inpassword === password) {
+        alert("Access Granted");
+        return;
+      }
+      return;
+    }
+  } catch (error) {
+    alert("402 Access Denied");
+  }
 }
 
 export default function App() {
@@ -31,7 +49,7 @@ export default function App() {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign In
             </h1>
-            <form className="space-y-4 md:space-y-6" onSubmit={Register}>
+            <form className="space-y-4 md:space-y-6" onSubmit={signin}>
               <div>
                 <label
                   htmlFor="email"
@@ -65,7 +83,7 @@ export default function App() {
                 />
               </div>
 
-              <div className="flex items-start">
+              {/* <div className="flex items-start">
                 <div className="flex items-center h-5">
                   <input
                     id="terms"
@@ -83,7 +101,7 @@ export default function App() {
                     Remember me
                   </label>
                 </div>
-              </div>
+              </div> */}
               <button
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
