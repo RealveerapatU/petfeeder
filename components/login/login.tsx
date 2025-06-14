@@ -4,28 +4,36 @@ import React from "react";
 require("dotenv").config();
 
 async function signin(e: React.FormEvent<HTMLFormElement>) {
+  let authen = false;
   e.preventDefault();
   const formData = new FormData(e.currentTarget);
   const username = formData.get("email")?.toString();
   const inpassword = formData.get("password")?.toString();
 
   try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_URL}/api/user`,
-      {
-        username: username,
-      }
-    );
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/user`);
     if (response.status === 200) {
-      const password = response.data.users[0].passwords;
-      if (inpassword === password) {
-        alert("Access Granted");
-        return;
+      const data = response.data.users;
+      const apiusername = data.map((item: any) => {
+        return item.usernames;
+      });
+      const apipassword = data.map((item: any) => {
+        return item.passwords;
+      });
+      for (let i = 0; i < data.length; i++) {
+        if (username === apiusername[i] && inpassword === apipassword[i]) {
+          authen = true;
+          break;
+        }
       }
+      if (authen) {
+        alert("Access Granted");
+      }
+      alert("402 Access Denied")
       return;
     }
   } catch (error) {
-    alert("402 Access Denied");
+    console.log(error);
   }
 }
 
