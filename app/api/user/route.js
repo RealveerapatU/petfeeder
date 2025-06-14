@@ -26,7 +26,7 @@ export async function GET(request) {
     if (result.length > 0) {
       return NextResponse.json(     { message: "Success", users: result }, { status: 200 });
     }
-    return NextResponse.json({ message: "Not Found" }, { status: 404 });
+    return NextResponse.json({ message: "Not Found" }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "Internal Server Error" },

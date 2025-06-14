@@ -8,6 +8,9 @@ async function checkRepeat(username: string) {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/user`);
     if (response.status === 200) {
       const data = response.data.users;
+      if (data === undefined) {
+        return "norepeat";
+      }
       const usernames = data.map((item: any) => item.usernames);
       for (let i = 0; i < usernames.length; i++) {
         if (usernames[i] === username) {
