@@ -11,27 +11,31 @@ async function signin(e: React.FormEvent<HTMLFormElement>) {
   const inpassword = formData.get("password")?.toString();
 
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/user`);
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_URL}/autoinnova/user`
+    );
     if (response.status === 200) {
-      const data = response.data.users;
-      const apiusername = data.map((item: any) => {
+      const data = response.data;
+      const apiusernames = data.map((item: any) => {
         return item.usernames;
       });
-      const apipassword = data.map((item: any) => {
+      const apipasswords = data.map((item: any) => {
         return item.passwords;
       });
       for (let i = 0; i < data.length; i++) {
-        if (username === apiusername[i] && inpassword === apipassword[i]) {
+        if (apiusernames[i] === username && inpassword === apipasswords[i]) {
           authen = true;
           break;
         }
       }
       if (authen) {
         alert("Access Granted");
+        return;
       }
-      alert("402 Access Denied")
-      return;
+      alert("402 Access Denied");
     }
+
+    return;
   } catch (error) {
     console.log(error);
   }

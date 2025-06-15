@@ -5,23 +5,24 @@ require("dotenv").config();
 async function checkRepeat(username: string) {
   let repeat = false;
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/user`);
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_URL}/autoinnova/user`
+    );
     if (response.status === 200) {
-      const data = response.data.users;
-      if (data === undefined) {
-        return "norepeat";
-      }
-      const usernames = data.map((item: any) => item.usernames);
-      for (let i = 0; i < usernames.length; i++) {
-        if (usernames[i] === username) {
+      const data = response.data;
+      const apiusernames = data.map((item: any) => item.usernames);
+      for (let i = 0; i < apiusernames.length; i++) {
+        if (apiusernames[i] === username) {
           repeat = true;
           break;
         }
       }
+
       if (repeat) {
         return "repeat";
+      } else {
+        return "norepeat";
       }
-      return "norepeat";
     }
   } catch (error) {
     console.log(error);
@@ -39,7 +40,7 @@ async function Register(e: React.FormEvent<HTMLFormElement>) {
   if (password === confirmPassword) {
     if (isRepeat === "norepeat") {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_URL}/api/registra`,
+        `${process.env.NEXT_PUBLIC_URL}/autoinnova/registra`,
         {
           username: username,
           password: password,
