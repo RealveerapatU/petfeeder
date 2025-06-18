@@ -91,9 +91,20 @@ export default function App() {
     "Profile",
     "Dashboard",
     "Analytics",
-    "Log Out",
   ];
-  
+  const menuItem = [{
+    "name": "Profile",
+    "location": "/",
+  }, 
+  {
+    "name": "Dashboard",
+    "location": "/dashboard"
+  },
+  {
+   "name":"Analytics",
+   "location":"/"
+  }];
+
 
   return (
     <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
@@ -203,7 +214,7 @@ export default function App() {
         </Dropdown>
       </NavbarContent>
       <NavbarMenu>
-        {menuItems.map((item, index) => (
+        {menuItem.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
               className="w-full"
@@ -214,10 +225,10 @@ export default function App() {
                     ? "danger"
                     : "foreground"
               }
-              href="#"
+              href={item.location}
               size="lg"
             >
-              {item}
+              {item.name}
             </Link>
           </NavbarMenuItem>
         ))}
